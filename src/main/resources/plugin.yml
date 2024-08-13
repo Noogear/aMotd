@@ -1,0 +1,9 @@
+name: EzMotd
+version: '1.0'
+main: me.Noogear.EzMotd
+api-version: '1.21'
+author: Noogear
+commands:
+  reload:
+    description: reload the config
+    permission: ezmotd.reload

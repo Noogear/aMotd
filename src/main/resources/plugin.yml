@@ -1,0 +1,11 @@
+name: aMotd
+version: '1.0'
+main: me.aMotd.aMotd
+api-version: '1.21'
+prefix: aMotd
+commands:
+  amotd:
+    description: acommand
+permissions:
+  amotd.reload:
+    default: op

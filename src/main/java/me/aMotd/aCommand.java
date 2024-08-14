@@ -17,7 +17,7 @@ public class aCommand implements CommandExecutor {
                 if (sender.hasPermission("amotd.reload")) {
                     try {
                         aMotd.getInstance().reloadConfig();
-                        aMotd.getInstance().loadMotd();
+                        aMotd.getInstance().setMotd();
                         sender.sendMessage("Reloaded Successfully:)");
                     } catch (Exception e) {
                         sender.sendMessage(e.getMessage());

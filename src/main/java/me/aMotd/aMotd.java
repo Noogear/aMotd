@@ -1,5 +1,6 @@
 package me.aMotd;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -32,8 +33,8 @@ public final class aMotd extends JavaPlugin{
                 if (this.config.getBoolean("enabled")) {
                     String line1 = this.config.getString("motd.line1");
                     String line2 = this.config.getString("motd.line2");
-                    String motd = line1 + System.lineSeparator() + line2;
-                    String legacyMotd = LegacyComponentSerializer.legacySection().serialize(this.miniMessage.deserialize(motd));
+                    Component motd = this.miniMessage.deserialize(line1 + System.lineSeparator() + line2);
+                    String legacyMotd = LegacyComponentSerializer.legacySection().serialize(motd);
                     this.getServer().setMotd(legacyMotd);
                 }
             } catch (Exception e) {

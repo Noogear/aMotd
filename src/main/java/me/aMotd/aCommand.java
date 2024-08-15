@@ -6,8 +6,6 @@ import org.bukkit.command.CommandSender;
 
 public class aCommand implements CommandExecutor {
 
-    public aCommand() {}
-
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(args.length == 0) {
             sender.sendMessage("use [/amotd reload] to reload this plugin.");
@@ -17,7 +15,7 @@ public class aCommand implements CommandExecutor {
                 if (sender.hasPermission("amotd.reload")) {
                     try {
                         aMotd.getInstance().reloadConfig();
-                        aMotd.getInstance().setMotd();
+                        aMotd.getInstance().loadMotd();
                         sender.sendMessage("Reloaded Successfully:)");
                     } catch (Exception e) {
                         sender.sendMessage(e.getMessage());

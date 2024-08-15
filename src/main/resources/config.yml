@@ -1,4 +1,10 @@
 enabled: true
 motd:
-  line1: "<gradient:red:blue>Welcome to our Server!</gradient>"
-  line2: "<green>Have a good day!</green>"
+  #false, forwards, random
+  order: false
+  line1:
+  - "<gradient:red:blue>Welcome to our Server!</gradient>"
+  line2:
+  - "<green>Have a good day!</green>"
+icon:
+  order: false

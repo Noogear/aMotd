@@ -9,37 +9,53 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public final class aMotd extends JavaPlugin{
+
     private static aMotd instance;
     private MiniMessage miniMessage;
     private FileConfiguration config;
+    private List<String> line1List = new ArrayList<>();
+    private List<String> line2List = new ArrayList<>();
+
     public static aMotd getInstance() {
         return instance;
     }
+
     public void onEnable() {
         instance = this;
         this.saveDefaultConfig();
         this.miniMessage = MiniMessage.miniMessage();
         Objects.requireNonNull(this.getCommand("amotd")).setExecutor(new aCommand());
-        this.setMotd();
+        this.loadMotd();
     }
 
-    public void setMotd() {
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-            this.config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "config.yml"));
+    public void setMotd(String line1,String line2) {
             try {
-                if (this.config.getBoolean("enabled")) {
-                    String line1 = this.config.getString("motd.line1");
-                    String line2 = this.config.getString("motd.line2");
-                    Component motd = this.miniMessage.deserialize(line1 + System.lineSeparator() + line2);
-                    String legacyMotd = LegacyComponentSerializer.legacySection().serialize(motd);
-                    this.getServer().setMotd(legacyMotd);
-                }
+                Component motd = this.miniMessage.deserialize(line1 + System.lineSeparator() + line2);
+                String legacyMotd = LegacyComponentSerializer.legacySection().serialize(motd);
+                this.getServer().setMotd(legacyMotd);
             } catch (Exception e) {
                 this.getLogger().severe("Failed to set Motd: " + e.getMessage());
             }
+    }
+
+    public void loadMotd() {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            if (this.config.getBoolean("enabled")) {
+                try{
+                    this.config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "config.yml"));
+                    this.line1List = this.config.getStringList("motd.line1");
+                    this.line2List = this.config.getStringList("motd.line2");
+                }catch (Exception e){
+                    this.getLogger().severe("Failed to load Motd: " + e.getMessage());
+                }
+                this.setMotd(line1List.getFirst(),line2List.getFirst());
+            }
         });
     }
+
 }

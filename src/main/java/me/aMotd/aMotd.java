@@ -17,9 +17,9 @@ public final class aMotd extends JavaPlugin{
 
     private static aMotd instance;
     private MiniMessage miniMessage;
-    private FileConfiguration config;
-    private List<String> line1List = new ArrayList<>();
-    private List<String> line2List = new ArrayList<>();
+    public static FileConfiguration config;
+    public static List<String> line1List = new ArrayList<>();
+    public static List<String> line2List = new ArrayList<>();
 
     public static aMotd getInstance() {
         return instance;
@@ -45,16 +45,16 @@ public final class aMotd extends JavaPlugin{
 
     public void loadMotd() {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
-            if (this.config.getBoolean("enabled")) {
                 try{
-                    this.config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "config.yml"));
-                    this.line1List = this.config.getStringList("motd.line1");
-                    this.line2List = this.config.getStringList("motd.line2");
+                    config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "config.yml"));
+                    if (config.getBoolean("enabled")) {
+                        line1List = config.getStringList("motd.line1");
+                        line2List = config.getStringList("motd.line2");
+                    }
                 }catch (Exception e){
                     this.getLogger().severe("Failed to load Motd: " + e.getMessage());
                 }
                 this.setMotd(line1List.getFirst(),line2List.getFirst());
-            }
         });
     }
 
